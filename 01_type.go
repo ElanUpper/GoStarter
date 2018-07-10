@@ -11,7 +11,7 @@ import (
 
 	u(int), u(int8), u(int16), u(int32), u(int64), uintptr 指针
 
-    byte, rune 字符(char)
+    byte, rune 字符(没有char，相当于char)
 
 	float32, float64, complex64, complex128
  */
