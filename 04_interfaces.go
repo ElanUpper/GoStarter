@@ -18,7 +18,7 @@ type GetInfo interface {
 
 
 //------------------------------------ simple ------------------------------------
-// 实现接口
+// 实现接口(复制方式)
 type ImpInfo struct {
 	Content string ;
 }
@@ -29,7 +29,7 @@ func (Info ImpInfo) GetContent(url string) string {
 }
 
 //------------------------------------ complex ------------------------------------
-// 实现接口
+// 实现接口(引用地址方式)
 type WebInfo struct {
 	Content   string ;
 	UserAgent string ;
@@ -58,29 +58,56 @@ func getContent(info GetInfo) string {
 // 检查类型
 func Inspect_type(Info GetInfo){
 
-	// 打印值
-	fmt.Printf("%T,  %v,  %s\n", Info, Info, []rune(getContent(Info))[:30])
+	// 打印类型， 值
+	fmt.Printf("%T,  %v\n", Info, Info) // , []rune(getContent(Info))[:30])
 
-	//
-	switch Info.(type) {
+	// type分类
+	switch v := Info.(type) {
+	case ImpInfo: //
+		fmt.Println(Info, "implemented by ImpInfo", v.Content )
+	case *WebInfo: // 指针方式
+		fmt.Println(Info, "implemented by WebInfo", v.UserAgent, v.timezone);
+	}
 
-	case ImpInfo:
-		fmt.Println("ImpInfo")
-	case *WebInfo:
-		fmt.Println("WebInfo");
+}
+
+// interface as parameters
+func getCalc(inter1, inter2 interface{})  {
+	switch type1 := inter1.(type) {
+	case int:
+		fmt.Printf("type [%T] value [%d]\n", type1, inter1.(int) + inter2.(int) )
+	case float32:
+		fmt.Printf("type [%T] value [%f]\n", type1, inter1.(float32) + inter2.(float32) )
+	default:
+		fmt.Printf("type [%T], not support!\n", type1 )
 	}
 }
 
+
 func main() {
+	// 接口
 	var Info GetInfo ;
-	Info = ImpInfo{"hello world"}
-	fmt.Printf("%T,  %v,  %s\n", Info, Info, getContent(Info))
 
 
-	var Web WebInfo ;
-	Web = WebInfo{"hello world", "Chrome", time.Minute }
-	Inspect_type(&web);
+	var a interface{}
+	v1, ok1 := a.(string)
+	fmt.Println(v1, ok1)
 
+	// 查看
+	Info = ImpInfo{"type:value "}
+	Inspect_type(Info) ;
+
+	Info = &WebInfo{"type:pointer ", "Chrome", time.Minute }
+	Inspect_type(Info) ;
+
+	// type assertion
+	v := Info.(*WebInfo)
+	fmt.Println(v)
+
+	// interface as input parameter
+	getCalc(10, 20)
+	getCalc(float32(10.11), float32(20.22))
+	getCalc(true, false)
 
 
 }
