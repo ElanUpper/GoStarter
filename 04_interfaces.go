@@ -16,7 +16,6 @@ type GetInfo interface {
 	// GetCookie  (url string) string ;
 }
 
-
 //------------------------------------ simple ------------------------------------
 // 实现接口(复制方式)
 type ImpInfo struct {
@@ -94,17 +93,21 @@ func main() {
 	fmt.Println(v1, ok1)
 
 	// 查看
+	fmt.Println();
 	Info = ImpInfo{"type:value "}
-	Inspect_type(Info) ;
+	Inspect_type(Info) ; // switch (type)
 
+	fmt.Println();
 	Info = &WebInfo{"type:pointer ", "Chrome", time.Minute }
 	Inspect_type(Info) ;
 
 	// type assertion
-	v := Info.(*WebInfo)
-	fmt.Println(v)
+	fmt.Printf("\n------------------------------- type assertion -------------------------------\n");
+	webTypeAssert := Info.(*WebInfo)
+	fmt.Println(webTypeAssert.UserAgent, webTypeAssert.timezone)
 
 	// interface as input parameter
+	fmt.Println();
 	getCalc(10, 20)
 	getCalc(float32(10.11), float32(20.22))
 	getCalc(true, false)
