@@ -7,6 +7,27 @@ import (
 	"unicode/utf8"
 )
 
+// structure
+type Stu struct {
+	Id 		int ;
+	Name	string;
+}
+
+func map_structure_func(){
+	var StuList map[ string ] Stu ;
+	fmt.Println("address:", &StuList)
+	StuList = make(map[ string ] Stu)
+	fmt.Println("address:", &StuList)
+	// init
+	StuList["0"] = Stu{01, "Elan"}
+	StuList["1"] = Stu{02, "Jade"}
+	StuList["2"] = Stu{03, "Jason"}
+	// get
+	if stu1, ok := StuList["2"]; ok {
+		fmt.Printf("Id %d, Name %s", stu1.Id, stu1.Name)
+	}
+}
+
 // 除了slice map function以外，内建类型都可以作为key
 func map_get_value(){
 	dict_1 := map[string]string{
@@ -148,4 +169,5 @@ func main(){
 	//fmt.Println(get_max_chars("12301234043216"))
 	//decode_chinese_words("hello,王阳!!")
 	find_longest_str("我爱你你爱我吗我的")
+	map_structure_func()
 }

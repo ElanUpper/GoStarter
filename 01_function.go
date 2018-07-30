@@ -45,18 +45,39 @@ func f_add(a int, b int) int {
 	return a + b ;
 }
 
-// 可变参数
+// 不定参数传递
 // 返回参数列表数字和
-func f_variable_params(members ...int) int {
+func f_variable_params(members ... interface{} ) int {
 	s := 0
-	for i := range members {
-		fmt.Printf("step %d, value %d\n", i, members[i])
-		s += members[i]
+	for i, v := range members {
+		switch t := reflect.TypeOf(v); t.Kind() {
+		case reflect.Int :
+			fmt.Printf("step %d, value %d\n", i, members[i].(int))
+			s += members[i].(int)
+		case reflect.Float64:
+			//fmt.Printf("step %d, value %f\n", i, v.(float64))
+			s += int(v.(float64))
+		default:
+			panic("not support !")
+		}
+
 	}
 	return s ;
 }
 
 func main() {
+
+	// 使用匿名函数+调用参数
+	fmt.Println(
+		func (args ... int) int {
+			SumVal := 0
+			for i, v := range args {
+				fmt.Printf("%d, %d, %d\n", i, v, args[i])
+				SumVal += v
+			}
+			return SumVal
+		}(10, 20, 30, 40) );
+
 	// _ 表示这个返回值 我们这里不需要
 	a, b, _ := multi_returned_value(10, 3)
 	fmt.Printf("the value %d, %d\n", a, b)
@@ -74,6 +95,8 @@ func main() {
 	fmt.Printf("the result is %d\n", apply_func_as_parameter(func(a int, b int) int {
 		return int(math.Pow(float64(a), float64(b)) )
 	}, 10, 2))
+
 	// 使用可变参数
 	fmt.Printf("variable params: the result is %d\n", f_variable_params(1, 2, 3, 4, 5))
+	fmt.Printf("variable params: the result is %d\n", f_variable_params(1.2, 2.4, 3.6))
 }

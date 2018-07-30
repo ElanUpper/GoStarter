@@ -1,7 +1,10 @@
 package main
 
 import . "fmt"  // 直接导入 如果使用fmt中的func不需要添加fmt.
-import f "fmt"  // 直接导入fmt但是重命名为f
+import (
+	f "fmt"
+	"os"
+)               // 直接导入fmt但是重命名为f
 
 func const_define(){
 	// const
@@ -47,4 +50,6 @@ func enum_define(){
 func main(){
 	const_define()
 	enum_define()
+	// OS Args  打印运行参数
+	Println(os.Args)
 }
