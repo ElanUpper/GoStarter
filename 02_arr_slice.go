@@ -58,6 +58,22 @@ func manipulate_slice(arr []int){
 	fmt.Printf("after delete slice1 %v\n", tmp1)
 }
 
+/*
+
+new(T) 为每个新的类型T分配一片内存，初始化为 0 并且返回类型为*T的内存地址：
+这种方法 返回一个指向类型为 T，值为 0 的地址的指针，它适用于值类型如数组和结构体 它相当于 &T{}。
+
+make(T) 返回一个类型为 T 的初始值，它只适用于3种内建的引用类型：切片、map 和 channel
+
+ */
+
+ func new_make_diff(){
+ 	p_1 := new([] int )
+ 	v_1 := make([]int ,0);
+ 	fmt.Printf("the element %v, len %d, cap %d\n", *p_1, len(*p_1), cap(*p_1))
+ 	fmt.Printf("the element %v, len %d, cap %d\n", v_1, len(v_1), cap(v_1))
+ }
+
 func main(){
 	raw_arr   := [10]int{1, 2, 4, 8, 7, 10, 12} ; // cap = 10
 	//raw_slice1 := raw_arr[:] ;
@@ -76,4 +92,6 @@ func main(){
 	init_slice()
 	// slice 操作 copy/delete
 	manipulate_slice(raw_arr[:])
+	// make diff
+	new_make_diff()
 }
