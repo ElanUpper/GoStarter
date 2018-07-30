@@ -6,6 +6,9 @@ import (
 )
 
 /*
+
+// dock typing
+
 type Cat interface {
 	Wow() ;
 }
@@ -59,6 +62,30 @@ func (t test) foo() {
 	fmt.Println("fooooo:", t.V)
 }
 
+func chann_test(){
+	c := make(chan int, 1)
+	c <- 10
+	close(c)
+	v, ok := <-c
+	if ok {
+		fmt.Println(v, ok)
+		v, ok = <-c
+		fmt.Println(v, ok)
+		c <- 20
+	} else {
+		println("closed!")
+	}
+}
+
+func fib_test() func()int {
+	n_a, n_b := 0, 1
+	return func() int {
+		n_a, n_b = n_b, n_a + n_b
+		return n_a ;
+	}
+}
+
+
 func main() {
 	var aa ifa = &test{1234}
 	var ap = &aa
@@ -71,6 +98,11 @@ func main() {
 	foo(ap)
 	fmt.Println("main end o.v:", o.V)
 	aa.foo()
+
+	inst_fib := fib_test();
+	for i := 0; i<10; i++ {
+		fmt.Println(inst_fib())
+	}
 }
 
 func foo(f *ifa) {
