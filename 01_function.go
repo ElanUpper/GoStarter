@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"runtime"
-	"math"
 )
 
 func multi_returned_value(num_a, num_b int) (int, int, string) {
@@ -30,8 +30,8 @@ func multi_returned_value_err(num_a, num_b int, opertor string) (int, error) {
 	}
 }
 
-func apply_func_as_parameter(op func(int , int) int, a, b int) int {
-	p := reflect.ValueOf(op).Pointer()  // 获取函数指针
+func apply_func_as_parameter(op func(int, int) int, a, b int) int {
+	p := reflect.ValueOf(op).Pointer()    // 获取函数指针
 	f_name := runtime.FuncForPC(p).Name() // 获取函数名称
 	fmt.Printf("the funcition %s with parameter(%d, %d) is running!\n", f_name, a, b)
 	return op(a, b)
@@ -42,16 +42,16 @@ func f_power(a int, b int) int {
 }
 
 func f_add(a int, b int) int {
-	return a + b ;
+	return a + b
 }
 
 // 不定参数传递
 // 返回参数列表数字和
-func f_variable_params(members ... interface{} ) int {
+func f_variable_params(members ...interface{}) int {
 	s := 0
 	for i, v := range members {
 		switch t := reflect.TypeOf(v); t.Kind() {
-		case reflect.Int :
+		case reflect.Int:
 			fmt.Printf("step %d, value %d\n", i, members[i].(int))
 			s += members[i].(int)
 		case reflect.Float64:
@@ -62,21 +62,21 @@ func f_variable_params(members ... interface{} ) int {
 		}
 
 	}
-	return s ;
+	return s
 }
 
 func main() {
 
 	// 使用匿名函数+调用参数
 	fmt.Println(
-		func (args ... int) int {
+		func(args ...int) int {
 			SumVal := 0
 			for i, v := range args {
 				fmt.Printf("%d, %d, %d\n", i, v, args[i])
 				SumVal += v
 			}
 			return SumVal
-		}(10, 20, 30, 40) );
+		}(10, 20, 30, 40))
 
 	// _ 表示这个返回值 我们这里不需要
 	a, b, _ := multi_returned_value(10, 3)
@@ -93,7 +93,7 @@ func main() {
 	fmt.Printf("the result is %d\n", apply_func_as_parameter(f_power, 10, 2))
 	// 使用匿名函数
 	fmt.Printf("the result is %d\n", apply_func_as_parameter(func(a int, b int) int {
-		return int(math.Pow(float64(a), float64(b)) )
+		return int(math.Pow(float64(a), float64(b)))
 	}, 10, 2))
 
 	// 使用可变参数

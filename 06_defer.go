@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "awesomeProject/scr/04_Fib"
+	. "./04_Fib"
 	"bufio"
 	"fmt"
 	"os"
@@ -23,8 +23,23 @@ func defer_try(filename string) {
 	}
 }
 
+func func_buffer_io(file_name string) {
+	if f, err := os.Create(file_name); err == nil {
+		defer f.Close()
+
+		gener := FunClosure()
+
+		fwriter := bufio.NewWriter(f)
+		defer fwriter.Flush()
+
+		for i := 0; i < 20; i++ {
+			fmt.Fprintln(fwriter, gener())
+		}
+	}
+}
+
 // error 练习
-func error_try(filename string){
+func Error_try(filename string) {
 	_, err := os.OpenFile(filename, os.O_EXCL|os.O_CREATE, 0666)
 
 	// 假如自定义err  测试！！
@@ -34,7 +49,7 @@ func error_try(filename string){
 		if Perr, ok := err.(*os.PathError); ok {
 			fmt.Printf("%s, %s, %s\n", Perr.Op, Perr.Path, Perr.Err)
 		} else {
-			panic(err)  // 如果是自定义的就会走这个语句  
+			panic(err) // 如果是自定义的就会走这个语句
 		}
 
 	} else {
@@ -43,7 +58,47 @@ func error_try(filename string){
 
 }
 
+func defer_between_return_1() (t int) {
+	defer func() {
+		t = t + 1
+	}()
+
+	return t
+}
+
+func defer_between_return_2() (r int) {
+	t := 0
+
+	defer func() {
+		t = t + 1
+	}()
+
+	return t
+}
+
+// 这里的t实际上是defer函数中的参数
+func defer_between_return_3() (t int) {
+	defer func(t int) {
+		t = t + 1
+	}(t)
+
+	return 0
+}
+
+// 这里的t实际上是形式参数的值
+func defer_between_return_4() (t int) {
+	defer func() {
+		t = t + 1
+	}()
+
+	return 0
+}
+
 func main() {
-	defer_try("writer.txt")
-	error_try("writer.txt")
+	//func_buffer_io("writer.txt")
+	//func_buffer_io("writer.txt")
+	fmt.Println(defer_between_return_1())
+	fmt.Println(defer_between_return_2())
+	fmt.Println(defer_between_return_3())
+	fmt.Println(defer_between_return_4())
 }

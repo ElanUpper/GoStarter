@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"time"
 )
 
 /*
@@ -62,7 +63,7 @@ func (t test) foo() {
 	fmt.Println("fooooo:", t.V)
 }
 
-func chann_test(){
+func chann_test() {
 	c := make(chan int, 1)
 	c <- 10
 	close(c)
@@ -77,16 +78,23 @@ func chann_test(){
 	}
 }
 
-func fib_test() func()int {
+func fib_test() func() int {
 	n_a, n_b := 0, 1
 	return func() int {
-		n_a, n_b = n_b, n_a + n_b
-		return n_a ;
+		n_a, n_b = n_b, n_a+n_b
+		return n_a
 	}
 }
 
-
 func main() {
+
+	formate := "2006-01-02 15:04:05 Mon"
+	if localLoc, err := time.LoadLocation("Local"); err != nil {
+		fmt.Println("error!!")
+	} else {
+		fmt.Println(time.Now().In(localLoc).Format(formate))
+	}
+
 	var aa ifa = &test{1234}
 	var ap = &aa
 	var o = (*ap).(*test)
@@ -99,8 +107,8 @@ func main() {
 	fmt.Println("main end o.v:", o.V)
 	aa.foo()
 
-	inst_fib := fib_test();
-	for i := 0; i<10; i++ {
+	inst_fib := fib_test()
+	for i := 0; i < 10; i++ {
 		fmt.Println(inst_fib())
 	}
 }

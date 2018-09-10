@@ -3,33 +3,33 @@ package main
 import "fmt"
 
 type etree struct {
-	val	 int ;
-	left, right *etree ;
+	val         int
+	left, right *etree
 }
 
-func (et *etree)tran_print(f func(*etree)) { // 传入参数中 定义函数的参数&返回值
+func (et *etree) tran_print(f func(*etree)) { // 传入参数中 定义函数的参数&返回值
 	if et == nil {
-		return ;
+		return
 	}
-	et.left.tran_print(f);
+	et.left.tran_print(f)
 	f(et)
 	et.right.tran_print(f)
 }
 
 // 1. 编写传入函数（注意参数以及返回值）
-func printNode(et *etree){
+func printNode(et *etree) {
 	fmt.Println(et.val)
-	et.val++ ;
+	et.val++
 }
 
 // 2. 直接使用匿名函数（注意参数以及返回值）
 func (node *etree) PrintTree() {
-	node.tran_print(func(en *etree){
+	node.tran_print(func(en *etree) {
 		fmt.Println(en.val)
 	})
 }
 
-func main(){
+func main() {
 
 	// init
 	etree_1 := etree{10, nil, nil}

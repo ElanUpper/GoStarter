@@ -4,12 +4,12 @@ import "fmt"
 
 // 所有type/function 第一字母都需要大写
 type Employer struct {
-	name 		string;
-	underling 	Employee
+	name      string
+	underling Employee
 }
 
 func (emp *Employer) SetEmp(lv_name string) {
-	emp.name = lv_name ;
+	emp.name = lv_name
 }
 
 func (emp Employer) GetEmp() {
@@ -17,6 +17,6 @@ func (emp Employer) GetEmp() {
 }
 
 // 添加小弟
-func (employer *Employer) AddEmployee(employee Employee){
-	employer.underling = employee ;
+func (employer *Employer) AddEmployee(employee Employee) {
+	employer.underling = employee
 }

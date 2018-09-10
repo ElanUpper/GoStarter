@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-	"io"
 	"bufio"
+	"fmt"
+	"io"
+	"strings"
 )
 
 // 函数一等公民（闭包）  不能有状态改变 =
@@ -13,20 +13,20 @@ import (
 func add_numb(i_type string) func(i_v int) (int, *int) {
 	switch i_type {
 	case "add":
-		sum := 0;
+		sum := 0
 		// 返回sum的值 以及地址
 		return func(v int) (int, *int) {
 			sum += v
-			return sum, &sum;
+			return sum, &sum
 		}
 	default:
-		return nil;
+		return nil
 	}
 
 }
 
 // 正统函数编程
-type iAdder func(int)(int, iAdder) ;
+type iAdder func(int) (int, iAdder)
 
 func add_numb_func(i_a int) iAdder {
 	return func(i_b int) (i_result int, ifunc iAdder) {
@@ -38,36 +38,36 @@ func add_numb_func(i_a int) iAdder {
 func Fib_arry() func() int {
 	i_a, i_b := 0, 1
 	return func() int {
-		i_a, i_b = i_b, i_a+i_b ;
-		return i_a ;
+		i_a, i_b = i_b, i_a+i_b
+		return i_a
 	}
 }
 
 // 实现reader 接口
 // 费布拉奇数列
-type iReader func() int ;
+type iReader func() int
 
 func (r iReader) Read(p []byte) (n int, err error) {
 	next := r()
-	str  := fmt.Sprintf("%d\n", next)
+	str := fmt.Sprintf("%d\n", next)
 	if next > 20000 {
 		return 0, io.EOF
 	}
 	return strings.NewReader(str).Read(p)
 }
 
-func printFibContents(reader iReader){
+func printFibContents(reader iReader) {
 	scanner := bufio.NewScanner(reader)
-	for scanner.Scan(){
+	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
 }
 
 func main() {
-	adder := add_numb("add");
+	adder := add_numb("add")
 	arr_nub := []int{2, 4, 8, 10}
 	for i := 0; i < len(arr_nub); i++ {
-		fmt.Println(adder(arr_nub[i]));
+		fmt.Println(adder(arr_nub[i]))
 	}
 
 	adder_func := add_numb_func(0)
@@ -82,7 +82,6 @@ func main() {
 		fmt.Println(funcb())
 	}
 
-	printFibContents(funcb);
-
+	printFibContents(funcb)
 
 }
